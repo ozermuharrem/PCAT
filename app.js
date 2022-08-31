@@ -7,6 +7,8 @@ const app = express();
 
 //midllewares
 app.use(express.static('public'));
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 
 
 // ejs 
@@ -29,6 +31,11 @@ app.get('/add', (req, res) => {
     // res.sendFile(path.resolve(__dirname , "temp/about.html"))
    res.render('add');
  
+ })
+
+ app.post('/photos', (req,res) => {
+  console.log(req.body);
+  res.redirect('/');
  })
  
 
