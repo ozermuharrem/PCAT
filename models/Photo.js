@@ -10,11 +10,11 @@ const PhotoSchema = new Schema(
         image: String,
         dateCreated: {
             type:Date,
-            default: Date.now
+            default: Date.now // fotografın yüklendiği zamanı tutar tarih değişmez
         }
     }
 )
 // collection oluşturma
-const photos = mongoose.model('photos', PhotoSchema);
+const Photos = mongoose.model('photos', PhotoSchema);
 
-module.exports = Photo;
+module.exports = Photos;

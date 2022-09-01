@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const ejs = require('ejs');
-const Photos = require('./models/Photo')
+const Photo = require('./models/Photo')
 const app = express();
 
 //connect db
@@ -16,8 +16,8 @@ mongoose.connect('mongodb://localhost/Pcat-db', {
 
 //midllewares
 app.use(express.static('public'));
-app.use(express.urlencoded({extended:true}));
-app.use(express.json());
+app.use(express.urlencoded({extended:true})); // url de ki datayı okumak için
+app.use(express.json()); // urldeki datayı json formatına sokmak için
 
 
 // ejs 
@@ -25,9 +25,13 @@ app.use(express.json());
 app.set("view engine", "ejs");
 
 
-app.get('/' , (req, res) => {
+app.get('/' , async (req, res) => {
+
+  const photos = await Photo.find({});
   // res.sendFile(path.resolve(__dirname , "temp/index.html")) // ejs kullanmadan bu şekide send edilir
-  res.render('index');
+   res.render('index', {
+    photos
+  });
 })
 
 app.get('/about', (req, res) => {
@@ -42,18 +46,10 @@ app.get('/add', (req, res) => {
  
  })
 
- app.post('/photos', (req,res) => {
-  console.log(req.body);
+ app.post('/photos', async (req,res) => {
+  await Photo.create(req.body);
   res.redirect('/');
  })
- 
-
-
-
-
-
-
-
 
 const port = 3000;
 
