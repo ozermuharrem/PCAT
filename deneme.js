@@ -1,27 +1,20 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// const util= require('util');
-// const encoder = new util.TextEncoder('utf-8');
-// veri tabanına bağlanma
 
-mongoose.connect('mongodb://localhost/pcat-test-db', {
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-});
+//connection db => veri tabanına ulaşmak için
+mongoose.connect('mongodb://localhost/pcat-test-db');
+
 
 // schema oluşturma => şablon oluşturma
+const PhotoSchema = new Schema({
+    title: String,
+    description:String
+});
 
-let PhotoSchema = new Schema(
-    {
-        title: string,
-        description: string
-    }
-)
+// döküman oluşturma 
+const photos = mongoose.model('photos', PhotoSchema)
 
-const photos = mongoose.model('photos', PhotoSchema);
-
-//create a photo 
-
+//create a photo => oluşturmak istediğim veriyi kullanma
 photos.create({
-    title: "Bilgisayar Fotoğrafları", description: "Yanlış ellerdeki bilgisayarlar ne kadar da masum bakıyorlar"
+    title: "İnsan Fotoğrafları", description: "Kod yazarken keşke kendi yüzümü görebilseydim"
 })

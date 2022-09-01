@@ -1,8 +1,17 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const path = require('path');
 const ejs = require('ejs');
-
+const Photos = require('./models/Photo')
 const app = express();
+
+//connect db
+
+mongoose.connect('mongodb://localhost/Pcat-db', {
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+});
+
 
 
 //midllewares
