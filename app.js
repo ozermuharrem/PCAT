@@ -12,7 +12,7 @@ const fs = require('fs')
 
 mongoose.connect('mongodb://localhost/Pcat-db', {
     useNewUrlParser:true,
-    useUnifiedTopology:true
+    useUnifiedTopology:true,
 });
 
 
@@ -22,7 +22,9 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended:true})); // url de ki datayı okumak için
 app.use(express.json()); // urldeki datayı json formatına sokmak için
 app.use(fileUpload());
-app.use(methodOverride('_method'));
+app.use(methodOverride('_method', {
+  methods: ['POST', 'GET']
+}));
 
 
 // ejs 
@@ -90,6 +92,36 @@ app.get('/add', (req, res) => {
   res.render('edit', {
     photo
   })
+ });
+
+
+ //update
+
+ app.put('/photos/:id', async (req,res) => {
+  const photo = await Photo.findOne({_id : req.params.id});
+  photo.title = req.body.title;
+  photo.description = req.body.description;
+  photo.save();
+
+  res.redirect(`/photos/${req.params.id}`);
+ })
+
+
+ // delete 
+
+ app.delete('/photos/:id',async (req, res) => {
+ // console.log(req.params.id)
+
+  const photo = await Photo.findOne({_id: req.params.id});
+
+  let deletedImage = __dirname + '/public' + photo.image;
+
+  fs.unlinkSync(deletedImage);
+
+  await Photo.findByIdAndRemove(req.params.id);
+
+  res.redirect('/')
+
  })
 
 const port = 3000;
