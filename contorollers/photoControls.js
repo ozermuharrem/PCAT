@@ -4,12 +4,19 @@ const fs = require('fs')
 
 exports.getAllPhotos = async (req, res) => {
 
-    const photos = await Photo.find({}).sort('-dateCreated');
-    // res.sendFile(path.resolve(__dirname , "temp/index.html")) // ejs kullanmadan bu şekide send edilir
-     res.render('index', {
-      photos
-    });
-  }
+  const page = req.query.page || 1; // başlangıç sayfası veya ilk sayfa
+  const photosPerPage = 2; // her sayfada bulunacak fotograf sayısı
+  const totalPhotos = await Photo.find().countDocuments(); // toplam fotograf sayısı
+  const photos = await Photo.find({})
+  .sort('-dateCreated') // sıralama
+  .skip((page -1 ) * photosPerPage) // pas geçmek için
+  .limit(photosPerPage); // her sayfada gösterilecke foğraf sayısı
+  res.render('index', {
+     photos: photos,
+     current:page,
+     pages: Math.ceil(totalPhotos / photosPerPage)
+   });
+}
 
   exports.getPhoto = async (req, res) => {
 
