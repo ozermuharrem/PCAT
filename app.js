@@ -9,7 +9,7 @@ const pageController = require('./contorollers/pageController');
 
 //connect db
 
-mongoose.connect('mongodb+srv://mozer:V47PVzhabuPMbYNq@cluster0.7d0x5wk.mongodb.net/pcat-app?retryWrites=true&w=majority', {
+mongoose.connect('mongodb://localhost:27017/pcat-db', {
     useNewUrlParser:true,
     useUnifiedTopology:true,
 }).then(()=>{
